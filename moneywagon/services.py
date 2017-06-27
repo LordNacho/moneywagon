@@ -135,7 +135,7 @@ class BlockCypher(Service):
         else:
             raise SkipThisService("Filtering by confirmations only for 0 and 1")
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = self.json_unspent_outputs_url.format(address=address, crypto=crypto)
         utxos = []
         for utxo in self.get_url(url).json()['txs']:
@@ -324,7 +324,7 @@ class SmartBitAU(Service):
             ))
         return transactions
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "%s/address/%s/unspent" % (self.base_url, address)
         utxos = []
         for utxo in self.get_url(url).json()['unspent']:
@@ -497,7 +497,7 @@ class Blockr(Service):
             scriptPubKey=utxo['script']
         )
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = self.json_unspent_outputs_url.format(address=address, crypto=crypto)
         utxos = []
         for utxo in self.get_url(url).json()['data']['unspent']:
@@ -656,7 +656,7 @@ class ChainSo(Service):
 
         return transactions
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "%s/get_tx_unspent/%s/%s" %(self.base_url, crypto, address)
         utxos = []
         for utxo in self.get_url(url).json()['data']['txs']:
@@ -894,7 +894,7 @@ class BlockChainInfo(Service):
         )
 
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "https://%s/unspent?active=%s" % (self.domain, address)
 
         response = self.get_url(url)
@@ -973,7 +973,7 @@ class DogeChainInfo(Service):
         response = self.get_url(url).json()
         return response['balance']
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "https://dogechain.info/api/v1/unspent/" + address
         response = self.get_url(url).json()
         utxos = []
@@ -1085,7 +1085,7 @@ class CryptoID(Service):
             confirmations=r['confirmations'],
         )
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "http://chainz.cryptoid.info/%s/api.dws?q=unspent&active=%s&key=%s" % (
             crypto, address, self.api_key
         )
@@ -1249,7 +1249,7 @@ class BitpayInsight(Service):
             address=utxo['address']
         )
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "%s://%s/api/addr/%s/utxo?noCache=1" % (self.protocol, self.domain, address)
         utxos = []
         for utxo in self.get_url(url).json():
@@ -1376,7 +1376,7 @@ class BitGo(Service):
             ))
         return txs
 
-    def get_unspent_outputs(self, crypto, address, confirmations=1):
+    def get_unspent_outputs(self, crypto, address, confirmations=0):
         url = "%s/api/v1/address/%s/unspents" % (self.base_url, address)
         utxos = []
         for utxo in self.get_url(url).json()['unspents']:
